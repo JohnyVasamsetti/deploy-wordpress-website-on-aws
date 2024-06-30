@@ -43,3 +43,21 @@ resource "aws_security_group" "front-tier-sg" {
     Name = "front-tier-sg"
   }
 }
+
+resource "aws_security_group" "app-tier-sg" {
+  name = "app-tier-sg"
+  vpc_id = aws_vpc.main_vpc.id
+  tags = {
+    task = "wordpress-deploy"
+    Name = "app-tier-sg"
+  }
+}
+
+resource "aws_security_group_rule" "app-tier-ingress-rule" {
+  from_port         = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.app-tier-sg.id
+  to_port           = 80
+  type              = "ingress"
+  source_security_group_id = aws_security_group.front-tier-sg.id
+}
