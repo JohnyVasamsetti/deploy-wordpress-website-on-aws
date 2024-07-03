@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "app-tier-asg" {
   max_size = 3
   min_size = 1
   desired_capacity = 2
-  vpc_zone_identifier = [aws_subnet.app-tier-sn-1.id]
+  vpc_zone_identifier = [aws_subnet.app-tier-sn-1.id,aws_subnet.app-tier-sn-2.id]
   launch_template {
     id = aws_launch_template.app-tier-lt.id
   }
