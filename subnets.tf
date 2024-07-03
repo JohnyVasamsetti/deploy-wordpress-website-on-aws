@@ -9,6 +9,16 @@ resource "aws_subnet" "front-tier-sn-1" {
   }
   tags = merge(local.tags,{"Name":"front-tier-sn-1"})
 }
+resource "aws_subnet" "front-tier-sn-2" {
+  vpc_id = aws_vpc.main_vpc.id
+  cidr_block = local.front_tier_cidr_block_2
+  availability_zone = "us-east-1b"
+  map_public_ip_on_launch = true
+  lifecycle {
+    create_before_destroy = true
+  }
+  tags = merge(local.tags,{"Name":"front-tier-sn-2"})
+}
 
 resource "aws_subnet" "app-tier-sn-1" {
   vpc_id = aws_vpc.main_vpc.id

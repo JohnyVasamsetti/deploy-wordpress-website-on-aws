@@ -16,9 +16,14 @@ resource "aws_route_table" "app-tier-rt" {
 }
 
 # Route table to Subnet association
-resource "aws_route_table_association" "front-tier-rta" {
+resource "aws_route_table_association" "front-tier-1-rta" {
   route_table_id = aws_route_table.front-tier-rt.id
   subnet_id = aws_subnet.front-tier-sn-1.id
+}
+
+resource "aws_route_table_association" "front-tier-2-rta" {
+  route_table_id = aws_route_table.front-tier-rt.id
+  subnet_id = aws_subnet.front-tier-sn-2.id
 }
 
 resource "aws_route_table_association" "app-tier-1-rta" {
@@ -28,5 +33,5 @@ resource "aws_route_table_association" "app-tier-1-rta" {
 
 resource "aws_route_table_association" "app-tier-2-rta" {
   route_table_id = aws_route_table.app-tier-rt.id
-  subnet_id = aws_subnet.app-tier-sn-1.id
+  subnet_id = aws_subnet.app-tier-sn-2.id
 }
