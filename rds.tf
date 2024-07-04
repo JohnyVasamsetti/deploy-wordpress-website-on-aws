@@ -44,6 +44,8 @@ resource "aws_secretsmanager_secret_version" "rds-master-secret" {
   secret_id     = aws_secretsmanager_secret.rds-master-creds.id
   secret_string = <<EOF
   {
+    "host": "${aws_db_instance.rds-db.endpoint}",
+    "port": "${aws_db_instance.rds-db.port}",
     "username": "${local.rds_user_name}",
     "password": "${random_password.master-password.result}",
   }
