@@ -44,7 +44,7 @@ resource "aws_security_group" "app-tier-sg" {
   ingress {
     from_port   = 80
     to_port     = 80
-    protocol    = "TCP"
+    protocol    = "tcp"
     cidr_blocks = [local.front_tier_cidr_block_1,local.front_tier_cidr_block_2]
   }
   egress {
@@ -57,4 +57,16 @@ resource "aws_security_group" "app-tier-sg" {
     task = "wordpress-deploy"
     Name = "app-tier-sg"
   }
+}
+
+resource "aws_security_group" "db-tier-sg" {
+  name = "db-tier-sg"
+  vpc_id = aws_vpc.main_vpc.id
+  ingress {
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = [local.app_tier_cidr_block_1,local.app_tier_cidr_block_2]
+  }
+  tags = merge(local.tags,{"Name":"db-tier-sg"})
 }
