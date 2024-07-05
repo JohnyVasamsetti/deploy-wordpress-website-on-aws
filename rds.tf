@@ -28,6 +28,7 @@ resource "aws_kms_key" "db_key" {
   description = "Key for the rds db"
   enable_key_rotation = true
   deletion_window_in_days = 7
+  tags = merge(local.tags,{"Name":"rds_kms"})
 }
 
 resource "random_password" "master-password" {
@@ -38,6 +39,7 @@ resource "random_password" "master-password" {
 resource "aws_secretsmanager_secret" "rds-master-creds" {
   name = "rds-master"
   kms_key_id = aws_kms_key.db_key.arn
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "rds-master-secret" {

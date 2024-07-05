@@ -6,6 +6,7 @@ resource "aws_autoscaling_group" "app-tier-asg" {
   vpc_zone_identifier = [aws_subnet.app-tier-sn-1.id,aws_subnet.app-tier-sn-2.id]
   launch_template {
     id = aws_launch_template.app-tier-lt.id
+    version = aws_launch_template.app-tier-lt.latest_version
   }
   tag {
     key                 = "Name"
@@ -19,6 +20,9 @@ resource "aws_launch_template" "app-tier-lt" {
   image_id = local.ami_id
   instance_type = local.instance_type
   vpc_security_group_ids = [aws_security_group.app-tier-sg.id]
+  iam_instance_profile {
+    name = aws_iam_instance_profile.app-instance-profile.name
+  }
   user_data = base64encode(file("user_data.sh"))
   tag_specifications {
     resource_type = "instance"
