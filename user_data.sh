@@ -23,16 +23,12 @@ wget https://wordpress.org/latest.tar.gz
 tar -xzf latest.tar.gz
 sudo cp -r wordpress/* /var/www/html/
 
-# update root password and create wp_user along with db and grant the permission to user
+# get the rds creds from the rds-master secret
 secret_value=$(aws secretsmanager get-secret-value --secret-id rds-master --query SecretString --output text)
-echo $secret_value
 db_host=$(echo $secret_value | jq -r '.host')
 db_username=$(echo $secret_value | jq -r '.username')
 db_password=$(echo $secret_value | jq -r '.password')
 db_name=$(echo $secret_value | jq -r '.dbname')
-
-export SECRET_VALUE=$secret_value
-echo $secret_value >> secret_value.txt
 
 # create the wp-config.php file
 sudo cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
