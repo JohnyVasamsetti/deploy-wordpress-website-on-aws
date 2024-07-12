@@ -30,4 +30,5 @@ resource "aws_launch_template" "app-tier-lt" {
       "Name" : "app-tier-workload"
     }
   }
+  depends_on = [aws_secretsmanager_secret_version.rds-master-secret]
 }

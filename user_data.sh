@@ -23,6 +23,16 @@ wget https://wordpress.org/latest.tar.gz
 tar -xzf latest.tar.gz
 sudo cp -r wordpress/* /var/www/html/
 
+# Set proper permissions for the web root
+sudo chown -R apache:apache /var/www/html
+sudo chmod -R 755 /var/www/html
+
+# Create the uploads directory if it doesn't exist
+if [ ! -d /var/www/html/wp-content/uploads ]; then
+    sudo mkdir -p /var/www/html/wp-content/uploads
+    sudo chown -R apache:apache /var/www/html/wp-content/uploads
+fi
+
 # get the rds creds from the rds-master secret
 secret_value=$(aws secretsmanager get-secret-value --secret-id rds-master --query SecretString --output text)
 db_host=$(echo $secret_value | jq -r '.host')
