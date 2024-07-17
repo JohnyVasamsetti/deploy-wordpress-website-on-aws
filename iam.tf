@@ -33,6 +33,13 @@ resource "aws_iam_policy" "rds-secret-permissions" {
           "kms:Decrypt"
         ],
         "Resource": "arn:aws:kms:${local.region}:${data.aws_caller_identity.account-identity.account_id}:key/*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "elasticfilesystem:DescribeFileSystems"
+        ],
+        "Resource": "*"
       }
     ]
   })

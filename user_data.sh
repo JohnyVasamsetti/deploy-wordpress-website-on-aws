@@ -49,3 +49,9 @@ sudo sed -i "s/password_here/$db_password/" $wp_config_file
 sudo sed -i "s/localhost/$db_host/" $wp_config_file
 sudo service httpd restart
 
+# mount the efs
+sudo yum install -y nfs-utils
+efs_region="us-east-1"
+efs_id=$(aws efs describe-file-systems --query "FileSystems[?Name=='wordpress-storage'].FileSystemId" --output text)
+efs_dns_name="${efs_id}.efs.${efs_region}.amazonaws.com"
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport "$efs_dns_name:/" "/var/www/html"
