@@ -17,10 +17,12 @@ resource "aws_efs_file_system" "wordpress-file-storage" {
 
 resource "aws_efs_mount_target" "storage-mt-1" {
   file_system_id = aws_efs_file_system.wordpress-file-storage.id
-  subnet_id      = aws_subnet.app-tier-sn-1.id
+  subnet_id      = aws_subnet.db-tier-sn-1.id
+  security_groups = [aws_security_group.storage-tier-sg.id]
 }
 
 resource "aws_efs_mount_target" "storage-mt-2" {
   file_system_id = aws_efs_file_system.wordpress-file-storage.id
-  subnet_id      = aws_subnet.app-tier-sn-2.id
+  subnet_id      = aws_subnet.db-tier-sn-2.id
+  security_groups = [aws_security_group.storage-tier-sg.id]
 }
